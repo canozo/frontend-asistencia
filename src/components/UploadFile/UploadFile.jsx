@@ -3,6 +3,8 @@ import { FilePond } from 'react-filepond';
 
 const UploadFile = () => {
   const [files, setFiles] = useState([]);
+  const [server, setServer] = useState('http://localhost:5000/api/student/upload');
+  const [token, setToken] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXNlciI6NiwiaWRVc2VyVHlwZSI6MywibmFtZXMiOiJKYXZpZXIgRWRnYXJkbyIsInN1cm5hbWVzIjoiQ2FubyBEZXJhcyIsImVtYWlsIjoiY2Fub0B1bml0ZWMuZWR1IiwiYWNjb3VudE51bWJlciI6IjExNzQxMjkxIn0sImlhdCI6MTU4NzMzMjMwNX0.VZYDS4-HLQuGXY3c_5KAT2RA7rCtu8k7ihYJicvokQw');
 
   const uploadFinished = (error, file) => {
     if (error) {
@@ -23,14 +25,26 @@ const UploadFile = () => {
 
   return (
     <form onSubmit={submit}>
-      <div>Holis</div>
+      <label>
+        Server:
+        <input type="text" name="server" value={server} onChange={setServer} />
+      </label>
+      <label>
+        Token:
+        <input type="text" name="token" value={token} onChange={e => setToken(e.target.value)} />
+      </label>
       <FilePond
         files={files}
         onupdatefiles={files => setFiles(files)}
         onprocessfile={uploadFinished}
         acceptedFileTypes={['image/jpeg', 'image/png']}
-        name="index-face"
-        server="http://localhost:5000/upload/BernieSanders"
+        name="face"
+        server={{
+          url: server,
+          process: {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        }}
         {...defaultProps}
       />
       <button type="submit">Subir</button>
