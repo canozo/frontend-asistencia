@@ -4,7 +4,8 @@
   "description": "Asistencia UNITEC",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "build-verbose": "webpack -p --display-modules"
   },
   "author": "Javier Cano",
   "license": "MIT",
@@ -12,12 +13,14 @@
     "filepond": "^4.13.0",
     "filepond-plugin-file-validate-size": "^2.2.1",
     "filepond-plugin-file-validate-type": "^1.2.5",
-    "filepond-plugin-image-exif-orientation": "^1.0.6",
-    "filepond-plugin-image-preview": "^4.6.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-filepond": "^7.0.1"
+    "react-filepond": "^7.0.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

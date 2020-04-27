@@ -1,6 +1,8 @@
 module.exports = {
   devServer: {
     contentBase: `${__dirname}/public`,
+    publicPath: '/',
+    historyApiFallback: true,
     compress: true,
     port: 3000
   },
