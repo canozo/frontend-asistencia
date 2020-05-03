@@ -1,0 +1,14 @@
+#login-root {
+  min-height: 100%;
+  // padding-top: 200px;
+}
+
+@media screen and (min-width: 576px) {
+  #login-elem {
+    border-style: solid;
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    border-radius: 8px;
+  }
+}
