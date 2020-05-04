@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../../redux/modules/auth';
 import './Login.scss';
 
-const Login = () => {
+const Login = ({ dispatch, logged }) => {
+  const [user, setUser] = useState('');
+  const [pw, setPw] = useState('');
+  const [err, setErr] = useState(false);
+
+  if (logged) {
+    return <Redirect to="/app" />;
+  }
+
   const submit = e => {
     e.preventDefault();
-    console.log('submit');
+
+    if (user && pw) {
+      const email = `${user.toLowerCase()}@unitec.edu`;
+      dispatch(login(email, pw))
+        .catch(() => setErr(true));
+    }
   };
 
   return (
@@ -28,6 +45,8 @@ const Login = () => {
                     type="text"
                     className="form-control"
                     aria-describedby="group-email"
+                    value={user}
+                    onChange={e => setUser(e.target.value)}
                   />
                   <div className="input-group-append">
                     <span id="group-email" className="input-group-text">@unitec.edu</span>
@@ -38,7 +57,13 @@ const Login = () => {
               {/* Password */}
               <div className="form-group">
                 <label htmlFor="login-password">Contraseña</label>
-                <input type="password" className="form-control" id="login-password" />
+                <input
+                  type="password"
+                  className="form-control"
+                  id="login-password"
+                  value={pw}
+                  onChange={e => setPw(e.target.value)}
+                />
               </div>
 
               {/* Forgot password */}
@@ -57,9 +82,11 @@ const Login = () => {
               </button>
 
               {/* About button */}
-              <button type="button" className="btn btn-info btn-block mt-5">
-                Sobre el proyecto
-              </button>
+              <Link to="/about">
+                <button type="button" className="btn btn-info btn-block mt-5">
+                  Sobre el proyecto
+                </button>
+              </Link>
 
             </div>
           </div>
@@ -69,5 +96,17 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  logged: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = globalState => {
+  const state = globalState.auth;
+  return {
+    logged: state.logged,
+  };
+};
+
+export default connect(mapStateToProps)(Login);
 
