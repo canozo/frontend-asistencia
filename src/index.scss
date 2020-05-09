@@ -18,3 +18,20 @@ body, html, #root {
   display: flex;
   align-items: center;
 }
+
+.fade-in {
+  animation: opacity-in 1s;
+}
+
+.fade-in-slow {
+  animation: opacity-in 2s;
+}
+
+@keyframes opacity-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

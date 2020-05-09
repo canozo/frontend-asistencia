@@ -21,10 +21,10 @@ Logout.propTypes = {
   logged: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = globalState => {
-  const state = globalState.auth;
+const mapStateToProps = state => {
+  const { auth } = state;
   return {
-    logged: state.logged,
+    logged: auth.logged,
   };
 };
 

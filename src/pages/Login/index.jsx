@@ -1,31 +1,41 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../../redux/modules/auth';
+import { login, signup } from '../../redux/modules/auth';
+import { clear } from '../../redux/modules/signup';
+import Alert from '../../components/Alert';
+import Modal from '../../components/Modal';
+import Signup from './Signup';
 import './Login.scss';
 
 const Login = ({ dispatch, logged }) => {
   const [user, setUser] = useState('');
   const [pw, setPw] = useState('');
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState('');
+  const [registerErr, setRegisterErr] = useState('');
 
   if (logged) {
     return <Redirect to="/app" />;
   }
 
-  const submit = e => {
-    e.preventDefault();
+  const submit = event => {
+    event.preventDefault();
+    const fullEmail = `${user.toLowerCase()}@unitec.edu`;
+    dispatch(login(fullEmail, pw))
+      .catch(() => setErr('Error al ingresar, no existe un usuario con esas credenciales!'));
+  };
 
-    if (user && pw) {
-      const email = `${user.toLowerCase()}@unitec.edu`;
-      dispatch(login(email, pw))
-        .catch(() => setErr(true));
-    }
+  const signupSubmit = event => {
+    event.preventDefault();
+    dispatch(signup())
+      .catch(err => {
+        console.log(err);
+        setRegisterErr(err);
+      });
   };
 
   return (
-    <div className="vertical-center">
+    <div className="vertical-center fade-in">
       <div id="login-root" className="container-fluid">
         {/* Start form */}
         <form onSubmit={submit}>
@@ -47,6 +57,7 @@ const Login = ({ dispatch, logged }) => {
                     aria-describedby="group-email"
                     value={user}
                     onChange={e => setUser(e.target.value)}
+                    required
                   />
                   <div className="input-group-append">
                     <span id="group-email" className="input-group-text">@unitec.edu</span>
@@ -63,8 +74,15 @@ const Login = ({ dispatch, logged }) => {
                   id="login-password"
                   value={pw}
                   onChange={e => setPw(e.target.value)}
+                  required
                 />
               </div>
+
+              <Alert
+                show={err ? true : false}
+                type="danger"
+                message={err}
+              />
 
               {/* Forgot password */}
               <button type="button" className="btn btn-link btn-block">
@@ -77,7 +95,13 @@ const Login = ({ dispatch, logged }) => {
               </button>
 
               {/* Student signup button */}
-              <button type="button" className="btn btn-secondary btn-block">
+              <button
+                type="button"
+                className="btn btn-secondary btn-block"
+                data-toggle="modal"
+                data-target="#modal-register"
+                onClick={() => dispatch(clear())}
+              >
                 Registrar estudiante
               </button>
 
@@ -92,21 +116,30 @@ const Login = ({ dispatch, logged }) => {
           </div>
         </form>
       </div>
+      <form onSubmit={signupSubmit}>
+        <Modal
+          id="modal-register"
+          title="Registrarse como estudiante"
+          primary="submit"
+          txtPrimary="Registrar"
+        >
+          <Signup />
+        </Modal>
+      </form>
     </div>
   );
 };
 
-Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  logged: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = globalState => {
-  const state = globalState.auth;
+const mapStateToProps = state => {
+  const { auth, signup } = state;
   return {
-    logged: state.logged,
+    logged: auth.logged,
+    names: signup.names,
+    surnames: signup.surnames,
+    email: signup.email,
+    password: signup.password,
+    accountNumber: signup.accountNumber,
   };
 };
 
 export default connect(mapStateToProps)(Login);
-

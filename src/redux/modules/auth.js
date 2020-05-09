@@ -42,9 +42,36 @@ async function apiLogin(payload) {
   return res;
 }
 
+async function apiSignup(payload) {
+  const data = await fetch(`${config.server}/api/auth/register`, {
+    method: 'post',
+    body: JSON.stringify(payload),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  const res = await data.json();
+  if (res.status === 'error') {
+    throw new Error(res.msg);
+  }
+  return res;
+}
+
 export function login(email, password) {
-  return dispatch => apiLogin({ email, password })
-    .then(res => dispatch({ type: LOGIN, payload: { token: res.token } }));
+  return async dispatch => {
+    const res = await apiLogin({ email, password });
+    return dispatch({ type: LOGIN, payload: { token: res.token } });
+  };
+}
+
+export function signup() {
+  return async (dispatch, getState) => {
+    const { signup } = getState();
+    const payload = { ...signup, email: `${signup.email}@unitec.edu` };
+    const res = await apiSignup(payload);
+    return dispatch({ type: LOGIN, payload: { token: res.token } })
+  };
 }
 
 export function logout() {
