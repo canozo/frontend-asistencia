@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './About.scss';
 
 const About = () => {
   return (
-    <div id="about-root">
+    <div className="h-100">
       <nav className="navbar navbar-dark bg-dark">
         <Link to="/">
           <span className="navbar-brand mb-0 h1">Volver</span>

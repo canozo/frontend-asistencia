@@ -36,7 +36,7 @@ const Login = ({ dispatch, logged }) => {
 
   return (
     <div className="vertical-center fade-in">
-      <Container id="login-root" fluid>
+      <Container fluid>
         {/* Start form */}
         <Form onSubmit={submit}>
           <div className="row">

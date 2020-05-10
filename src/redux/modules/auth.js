@@ -26,6 +26,22 @@ export default function reducer(state = defaultState, action = {}) {
   }
 }
 
+async function apiVerify(token) {
+  const data = await fetch(`${config.server}/api/auth/verify`, {
+    method: 'post',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const res = await data.json();
+  if (res.status === 'error') {
+    throw new Error(res.msg);
+  }
+  return res;
+}
+
 async function apiLogin(payload) {
   const data = await fetch(`${config.server}/api/auth/login`, {
     method: 'post',
@@ -61,7 +77,15 @@ async function apiSignup(payload) {
 export function login(email, password) {
   return async dispatch => {
     const res = await apiLogin({ email, password });
-    return dispatch({ type: LOGIN, payload: { token: res.token } });
+    const payload = {
+      token: res.token,
+      userType: res.user.userType,
+      names: res.user.names,
+      surnames: res.user.surnames,
+      email: res.user.email,
+      accountNumber: res.user.accountNumber,
+    };
+    return dispatch({ type: LOGIN, payload });
   };
 }
 
@@ -70,7 +94,27 @@ export function signup() {
     const { signup } = getState();
     const payload = { ...signup, email: `${signup.email}@unitec.edu` };
     const res = await apiSignup(payload);
-    return dispatch({ type: LOGIN, payload: { token: res.token } })
+    const loginData = {
+      token: res.token,
+      userType: res.user.userType,
+      names: res.user.names,
+      surnames: res.user.surnames,
+      email: res.user.email,
+      accountNumber: res.user.accountNumber,
+    };
+    return dispatch({ type: LOGIN, payload: { ...loginData } });
+  };
+}
+
+export function verify() {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    try {
+      await apiVerify(token);
+    }
+    catch (err) {
+      return dispatch({ type: LOGOUT });
+    }
   };
 }
 

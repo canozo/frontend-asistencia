@@ -6,7 +6,7 @@ import { logout } from '../../redux/modules/auth';
 
 const Logout = ({ dispatch, logged }) => {
   useEffect(() => {
-    dispatch(logout())
+    dispatch(logout());
   }, []);
 
   if (logged) {
