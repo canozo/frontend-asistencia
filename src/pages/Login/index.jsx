@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login, signup } from '../../redux/modules/auth';
+import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { clear } from '../../redux/modules/signup';
-import Alert from '../../components/Alert';
-import Modal from '../../components/Modal';
-import Signup from './Signup';
+import { login } from '../../redux/modules/auth';
+import TextField from '../../components/TextField';
+import SignupModal from './SignupModal';
 import './Login.scss';
 
 const Login = ({ dispatch, logged }) => {
   const [user, setUser] = useState('');
   const [pw, setPw] = useState('');
-  const [err, setErr] = useState('');
-  const [registerErr, setRegisterErr] = useState('');
+  const [loginErr, setLoginErr] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
 
   if (logged) {
     return <Redirect to="/app" />;
@@ -22,23 +26,19 @@ const Login = ({ dispatch, logged }) => {
     event.preventDefault();
     const fullEmail = `${user.toLowerCase()}@unitec.edu`;
     dispatch(login(fullEmail, pw))
-      .catch(() => setErr('Error al ingresar, no existe un usuario con esas credenciales!'));
+      .catch(() => setLoginErr(true));
   };
 
-  const signupSubmit = event => {
-    event.preventDefault();
-    dispatch(signup())
-      .catch(err => {
-        console.log(err);
-        setRegisterErr(err);
-      });
+  const onHideModal = () => {
+    dispatch(clear());
+    setShowRegister(false);
   };
 
   return (
     <div className="vertical-center fade-in">
-      <div id="login-root" className="container-fluid">
+      <Container id="login-root" fluid>
         {/* Start form */}
-        <form onSubmit={submit}>
+        <Form onSubmit={submit}>
           <div className="row">
             <div
               id="login-elem"
@@ -47,99 +47,68 @@ const Login = ({ dispatch, logged }) => {
               <h3 className="mb-4">Iniciar sesión</h3>
 
               {/* Email / Username */}
-              <div className="form-group">
-                <label htmlFor="login-user">Usuario</label>
-                <div className="input-group">
-                  <input
-                    id="login-user"
+              <Form.Group controlId="login-user">
+                <Form.Label>Usuario</Form.Label>
+                <InputGroup>
+                  <Form.Control
                     type="text"
-                    className="form-control"
-                    aria-describedby="group-email"
+                    required
                     value={user}
                     onChange={e => setUser(e.target.value)}
-                    required
                   />
-                  <div className="input-group-append">
-                    <span id="group-email" className="input-group-text">@unitec.edu</span>
-                  </div>
-                </div>
-              </div>
+                  <InputGroup.Append>
+                    <InputGroup.Text id="group-email">@unitec.edu</InputGroup.Text>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form.Group>
 
               {/* Password */}
-              <div className="form-group">
-                <label htmlFor="login-password">Contraseña</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="login-password"
-                  value={pw}
-                  onChange={e => setPw(e.target.value)}
-                  required
-                />
-              </div>
-
-              <Alert
-                show={err ? true : false}
-                type="danger"
-                message={err}
+              <TextField
+                id="login-password"
+                type="password"
+                label="Contraseña"
+                required
+                value={pw}
+                onChange={e => setPw(e.target.value)}
               />
 
+              <Alert variant="danger" className={`${loginErr ? 'fade-in' : 'd-none'}`}>
+                Error al ingresar, no existe un usuario con esas credenciales!
+              </Alert>
+
               {/* Forgot password */}
-              <button type="button" className="btn btn-link btn-block">
+              <Button variant="link" block>
                 Recuperar contraseña
-              </button>
+              </Button>
 
               {/* Submit button */}
-              <button type="submit" className="btn btn-primary btn-block">
+              <Button type="submit" variant="primary" block>
                 Iniciar sesión
-              </button>
+              </Button>
 
               {/* Student signup button */}
-              <button
-                type="button"
-                className="btn btn-secondary btn-block"
-                data-toggle="modal"
-                data-target="#modal-register"
-                onClick={() => dispatch(clear())}
-              >
+              <Button variant="secondary" block onClick={() => setShowRegister(true)}>
                 Registrar estudiante
-              </button>
+              </Button>
 
               {/* About button */}
               <Link to="/about">
-                <button type="button" className="btn btn-info btn-block mt-5">
+                <Button variant="info" className="mt-5" block>
                   Sobre el proyecto
-                </button>
+                </Button>
               </Link>
 
             </div>
           </div>
-        </form>
-      </div>
-      <form onSubmit={signupSubmit}>
-        <Modal
-          id="modal-register"
-          title="Registrarse como estudiante"
-          primary="submit"
-          txtPrimary="Registrar"
-        >
-          <Signup />
-        </Modal>
-      </form>
+        </Form>
+      </Container>
+
+      {/* Modal Signup */}
+      <SignupModal show={showRegister} onHide={onHideModal} />
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  const { auth, signup } = state;
-  return {
-    logged: auth.logged,
-    names: signup.names,
-    surnames: signup.surnames,
-    email: signup.email,
-    password: signup.password,
-    accountNumber: signup.accountNumber,
-  };
-};
+const mapStateToProps = state => ({ logged: state.auth.logged });
 
 export default connect(mapStateToProps)(Login);

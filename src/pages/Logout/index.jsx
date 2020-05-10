@@ -21,11 +21,6 @@ Logout.propTypes = {
   logged: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => {
-  const { auth } = state;
-  return {
-    logged: auth.logged,
-  };
-};
+const mapStateToProps = state => ({ logged: state.auth.logged });
 
 export default connect(mapStateToProps)(Logout);
