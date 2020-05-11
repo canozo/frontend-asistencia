@@ -3,13 +3,22 @@ body, html, #root {
   margin: 0;
 }
 
-.pos-a {
-  position: absolute;
+.material-icons.md-18 {
+  font-size: 18px;
 }
 
-.pos-r {
-  position: relative;
+.material-icons.md-24 {
+  font-size: 24px;
 }
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
 
 .vertical-center {
   min-height: 100%;

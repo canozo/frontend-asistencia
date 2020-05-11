@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { clear } from '../../redux/modules/signup';
@@ -36,7 +35,7 @@ const Login = ({ dispatch, logged }) => {
 
   return (
     <div className="vertical-center fade-in">
-      <Container fluid>
+      <div className="container-fluid">
         {/* Start form */}
         <Form onSubmit={submit}>
           <div className="row">
@@ -101,7 +100,7 @@ const Login = ({ dispatch, logged }) => {
             </div>
           </div>
         </Form>
-      </Container>
+      </div>
 
       {/* Modal Signup */}
       <SignupModal show={showRegister} onHide={onHideModal} />
