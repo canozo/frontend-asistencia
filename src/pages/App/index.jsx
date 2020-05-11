@@ -5,16 +5,19 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { verify } from '../../redux/modules/auth';
-import Gateway from './Gateway';
-import NotFound from '../NotFound';
+import AdminDropdown from '../Admin/Dropdown';
+import StudentDropdown from '../Student/Dropdown';
+import ProfessorDropdown from '../Professor/Dropdown';
 import Admin from '../Admin';
 import Student from '../Student';
 import Professor from '../Professor';
+import Gateway from './Gateway';
+import NotFound from '../NotFound';
 import './App.scss';
 
 const home = '/app';
 
-const App = ({ dispatch, logged, names, surnames }) => {
+const App = ({ dispatch, logged, userType, names, surnames }) => {
   if (!logged) {
     return <Redirect to="/" />;
   }
@@ -32,13 +35,28 @@ const App = ({ dispatch, logged, names, surnames }) => {
         <Navbar.Toggle aria-controls="main-navbar" className="mr-1" />
         <Navbar.Collapse id="main-navbar">
           <Nav className="mr-auto ml-3 d-none d-lg-block">
-            <Navbar.Text>{names} {surnames}</Navbar.Text>
+            <Link to={`${home}/${userType}/profile`}>
+              <Navbar.Text>
+                {names} {surnames}
+              </Navbar.Text>
+            </Link>
           </Nav>
           <Nav className="mr-3 ml-3 d-lg-none">
             <NavDropdown title={`${names} ${surnames}`} id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <Link to={`${home}/${userType}/profile`}>
+                <NavDropdown.Item className="menu-mobile" as="button">
+                  <i className="material-icons icon">
+                    account_circle
+                  </i>
+                  Perfil
+                </NavDropdown.Item>
+              </Link>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.2">Separated</NavDropdown.Item>
+              <Switch>
+                <Route path={`${home}/admin`} component={AdminDropdown} />
+                <Route path={`${home}/student`} component={StudentDropdown} />
+                <Route path={`${home}/professor`} component={ProfessorDropdown} />
+              </Switch>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
@@ -63,6 +81,7 @@ const App = ({ dispatch, logged, names, surnames }) => {
 
 const mapStateToProps = state => ({
   logged: state.auth.logged,
+  userType: state.auth.userType,
   names: state.auth.names,
   surnames: state.auth.surnames,
 });

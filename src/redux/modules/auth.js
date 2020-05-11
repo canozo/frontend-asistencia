@@ -11,12 +11,14 @@ const defaultState = {
   email: '',
   accountNumber: '',
   logged: false,
+  iat: 0,
 };
 
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
     case LOGIN:
-      return { ...action.payload, logged: true };
+      const iat = Math.floor(Date.now() / 1000);
+      return { ...action.payload, iat, logged: true };
 
     case LOGOUT:
       return { logged: false };
@@ -26,7 +28,12 @@ export default function reducer(state = defaultState, action = {}) {
   }
 }
 
-async function apiVerify(token) {
+async function apiVerify(token, iat) {
+  const now = Math.floor(Date.now() / 1000);
+  if (iat + 5400 < now) {
+    return { status: 'success', msg: 'Token has not expired (local).' };
+  }
+
   const data = await fetch(`${config.server}/api/auth/verify`, {
     method: 'post',
     headers: {
@@ -109,8 +116,9 @@ export function signup() {
 export function verify() {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const iat = getState().auth.iat;
     try {
-      await apiVerify(token);
+      await apiVerify(token, iat);
     }
     catch (err) {
       return dispatch({ type: LOGOUT });

@@ -22,6 +22,11 @@
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
 .sidebar-sticky {
   position: relative;
   top: 0;
@@ -31,12 +36,18 @@
   overflow-y: auto;
 }
 
-.sidebar .nav-link {
+.sidebar .nav-link,
+.menu-mobile {
   font-weight: 500;
   color: #333;
 }
 
-.sidebar .nav-link .icon {
+.icon {
+  vertical-align: text-bottom;
+}
+
+.sidebar .nav-link .icon,
+.menu-mobile .icon {
   margin-right: 6px;
   color: #999;
 }
@@ -52,8 +63,4 @@
 
 .hover-highlight:hover {
   background-color: #E6E6E6;
-}
-
-.icon {
-  vertical-align: text-bottom;
 }
