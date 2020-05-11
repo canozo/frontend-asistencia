@@ -5,12 +5,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { verify } from '../../redux/modules/auth';
-import AdminDropdown from '../Admin/Dropdown';
-import StudentDropdown from '../Student/Dropdown';
-import ProfessorDropdown from '../Professor/Dropdown';
-import Admin from '../Admin';
-import Student from '../Student';
-import Professor from '../Professor';
+import { Admin, AdminDropdown } from '../Admin';
+import { Student, StudentDropdown } from '../Student';
+import { Professor, ProfessorDropdown } from '../Professor';
+import { Camera, CameraDropdown } from '../Camera';
 import Gateway from './Gateway';
 import NotFound from '../NotFound';
 import './App.scss';
@@ -56,6 +54,7 @@ const App = ({ dispatch, logged, userType, names, surnames }) => {
                 <Route path={`${home}/admin`} component={AdminDropdown} />
                 <Route path={`${home}/student`} component={StudentDropdown} />
                 <Route path={`${home}/professor`} component={ProfessorDropdown} />
+                <Route path={`${home}/camera`} component={CameraDropdown} />
               </Switch>
             </NavDropdown>
           </Nav>
@@ -73,6 +72,7 @@ const App = ({ dispatch, logged, userType, names, surnames }) => {
         <Route path={`${home}/admin`} component={Admin} />
         <Route path={`${home}/student`} component={Student} />
         <Route path={`${home}/professor`} component={Professor} />
+        <Route path={`${home}/camera`} component={Camera} />
         <Route component={NotFound} />
       </Switch>
     </div>

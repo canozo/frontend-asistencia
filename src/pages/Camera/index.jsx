@@ -5,33 +5,28 @@ import Dashboard from '../../components/Dashboard';
 import Welcome from '../../components/Welcome';
 import Profile from '../Profile';
 
-const home = '/app/professor';
+const home = '/app/camera';
 
 const menu = [{
-  to: '/attendance',
+  to: '/marked',
   icon: 'assignment_turned_in',
-  title: 'Abrir asistencia',
-}, {
-  to: '/presencial',
-  icon: 'event_note',
-  title: 'Secciones presencial',
+  title: 'Historial de marcados',
 }];
 
-const Professor = () => (
+const Camera = () => (
   <Dashboard menu={menu} home={home}>
     <Switch>
       <Route exact path={home} component={Welcome} />
       <Route path={`${home}/profile`} component={Profile} />
-      <Route path={`${home}/attendance`} component={() => <h3>/attendance</h3>} />
-      <Route path={`${home}/presencial`} component={() => <h3>/presencial</h3>} />
+      <Route path={`${home}/marked`} component={() => <h3>/marked</h3>} />
       <Route component={Welcome} />
     </Switch>
   </Dashboard>
 );
 
-const ProfessorDropdown = () => <MobileItem menu={menu} home={home} />;
+const CameraDropdown = () => <MobileItem menu={menu} home={home} />;
 
 export {
-  Professor,
-  ProfessorDropdown,
+  Camera,
+  CameraDropdown,
 };
