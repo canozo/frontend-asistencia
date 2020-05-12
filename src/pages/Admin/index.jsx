@@ -4,6 +4,7 @@ import MobileItem from '../../components/MobileItem';
 import Dashboard from '../../components/Dashboard';
 import Welcome from '../../components/Welcome';
 import Profile from '../Profile';
+import Sections from '../Sections';
 
 const home = '/app/admin';
 
@@ -76,7 +77,7 @@ const Admin = () => (
       <Route path={`${home}/professor`} component={() => <h3>/professor</h3>} />
       <Route path={`${home}/personnel`} component={() => <h3>/personnel</h3>} />
       <Route path={`${home}/camera`} component={() => <h3>/camera</h3>} />
-      <Route path={`${home}/presencial`} component={() => <h3>/presencial</h3>} />
+      <Route path={`${home}/presencial`} component={Sections} />
       <Route component={Welcome} />
     </Switch>
   </Dashboard>

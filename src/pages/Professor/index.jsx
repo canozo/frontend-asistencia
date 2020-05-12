@@ -4,6 +4,7 @@ import MobileItem from '../../components/MobileItem';
 import Dashboard from '../../components/Dashboard';
 import Welcome from '../../components/Welcome';
 import Profile from '../Profile';
+import Sections from '../Sections';
 
 const home = '/app/professor';
 
@@ -23,7 +24,7 @@ const Professor = () => (
       <Route exact path={home} component={Welcome} />
       <Route path={`${home}/profile`} component={Profile} />
       <Route path={`${home}/attendance`} component={() => <h3>/attendance</h3>} />
-      <Route path={`${home}/presencial`} component={() => <h3>/presencial</h3>} />
+      <Route path={`${home}/presencial`} component={Sections} />
       <Route component={Welcome} />
     </Switch>
   </Dashboard>

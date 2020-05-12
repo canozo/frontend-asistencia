@@ -96,6 +96,7 @@ const SignupModal = ({
             id="signup-password"
             type="password"
             label="Contraseña"
+            pattern={config.regex.password.source}
             required
             value={password}
             onChange={e => dispatch(onChange({ password: e.target.value }))}

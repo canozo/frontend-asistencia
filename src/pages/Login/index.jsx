@@ -43,7 +43,12 @@ const Login = ({ dispatch, logged }) => {
               id="login-elem"
               className="col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 p-5"
             >
-              <h3 className="mb-4">Iniciar sesión</h3>
+              <h3>Iniciar sesión</h3>
+              <h6 className="mb-4">
+                <small className="text-muted">
+                  v0.0.2
+                </small>
+              </h6>
 
               {/* Email / Username */}
               <Form.Group controlId="login-user">
@@ -71,7 +76,7 @@ const Login = ({ dispatch, logged }) => {
                 onChange={e => setPw(e.target.value)}
               />
 
-              <Alert variant="danger" className={`${loginErr ? 'fade-in' : 'd-none'}`}>
+              <Alert className="fade-in" show={loginErr} variant="danger">
                 Error al ingresar, no existe un usuario con esas credenciales!
               </Alert>
 

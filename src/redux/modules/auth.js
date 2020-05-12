@@ -2,6 +2,7 @@ import config from '../../config';
 
 const LOGIN = 'salitec-web/auth/LOGIN';
 const LOGOUT = 'salitec-web/auth/LOGOUT';
+const UPDATE = 'salitec-web/auth/UPDATE';
 
 const defaultState = {
   token: '',
@@ -16,12 +17,15 @@ const defaultState = {
 
 export default function reducer(state = defaultState, action = {}) {
   switch (action.type) {
-    case LOGIN:
+      case LOGIN:
       const iat = Math.floor(Date.now() / 1000);
       return { ...action.payload, iat, logged: true };
 
     case LOGOUT:
       return { logged: false };
+
+    case UPDATE:
+      return { ...state, ...action.payload };
 
     default:
       return state;
@@ -30,7 +34,7 @@ export default function reducer(state = defaultState, action = {}) {
 
 async function apiVerify(token, iat) {
   const now = Math.floor(Date.now() / 1000);
-  if (iat + 5400 < now) {
+  if (now < iat + 5400) {
     return { status: 'success', msg: 'Token has not expired (local).' };
   }
 
@@ -71,6 +75,40 @@ async function apiSignup(payload) {
     body: JSON.stringify(payload),
     headers: {
       Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  const res = await data.json();
+  if (res.status === 'error') {
+    throw new Error(res.msg);
+  }
+  return res;
+}
+
+async function apiUpdateProfile(token, payload) {
+  const data = await fetch(`${config.server}/api/user`, {
+    method: 'put',
+    body: JSON.stringify(payload),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const res = await data.json();
+  if (res.status === 'error') {
+    throw new Error(res.msg);
+  }
+  return res;
+}
+
+async function apiUpdatePassword(token, password) {
+  const data = await fetch(`${config.server}/api/user/pw`, {
+    method: 'put',
+    body: JSON.stringify({ password }),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
@@ -123,6 +161,21 @@ export function verify() {
     catch (err) {
       return dispatch({ type: LOGOUT });
     }
+  };
+}
+
+export function updateProfile(payload) {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    await apiUpdateProfile(token, payload);
+    return dispatch({ type: UPDATE, payload });
+  };
+}
+
+export function updatePassword(password) {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    return await apiUpdatePassword(token, password);
   };
 }
 

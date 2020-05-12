@@ -3,15 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 import MobileItem from '../../components/MobileItem';
 import Dashboard from '../../components/Dashboard';
 import Welcome from '../../components/Welcome';
+import Sections from '../Sections';
 import Profile from '../Profile';
+import Upload from './Upload';
 
 const home = '/app/student';
 
 const menu = [{
-  to: '/section',
-  icon: 'library_books',
-  title: 'Secciones matriculadas',
-}, {
   to: '/history',
   icon: 'assignment_turned_in',
   title: 'Historial de asistencia',
@@ -19,6 +17,10 @@ const menu = [{
   to: '/upload',
   icon: 'face',
   title: 'Cargar imagen de rostro',
+}, {
+  to: '/section',
+  icon: 'library_books',
+  title: 'Secciones matriculadas',
 }, {
   to: '/presencial',
   icon: 'event_note',
@@ -32,8 +34,8 @@ const Student = () => (
       <Route path={`${home}/profile`} component={Profile} />
       <Route path={`${home}/section`} component={() => <h3>Sections</h3>} />
       <Route path={`${home}/history`} component={() => <h3>History</h3>} />
-      <Route path={`${home}/upload`} component={() => <h3>Upload</h3>} />
-      <Route path={`${home}/presencial`} component={() => <h3>Presencial</h3>} />
+      <Route path={`${home}/upload`} component={Upload} />
+      <Route path={`${home}/presencial`} component={Sections} />
       <Route component={Welcome} />
     </Switch>
   </Dashboard>
