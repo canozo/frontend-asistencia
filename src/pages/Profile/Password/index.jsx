@@ -30,6 +30,8 @@ const Password = ({ dispatch }) => {
     } else {
       try {
         await dispatch(updatePassword(password));
+        setPassword('');
+        setRepeat('');
         setAlert('success');
       }
       catch (err) {
