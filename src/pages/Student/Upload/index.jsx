@@ -22,9 +22,10 @@ async function apiUpload(token, formData) {
   return res;
 }
 
-async function apiGetFaces(token) {
+async function apiGetFaces(token, signal) {
   const data = await fetch(`${config.server}/api/student/faces`, {
     method: 'get',
+    signal,
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
@@ -45,9 +46,11 @@ const Upload = ({ token }) => {
   const [alertTimer, setAlertTimer] = useState(null);
 
   useEffect(() => {
-    apiGetFaces(token)
+    const ac = new AbortController();
+    apiGetFaces(token, ac.signal)
       .then(res => setFaces(res.data))
       .catch(err => console.log(err));
+    return () => ac.abort();
   }, []);
 
   const resetAlert = () => {

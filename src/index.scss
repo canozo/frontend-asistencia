@@ -19,6 +19,13 @@ body, html, #root {
   font-size: 48px;
 }
 
+.selected {
+  background-color: #E3E3E3 !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
 
 .vertical-center {
   min-height: 100%;

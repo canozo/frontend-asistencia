@@ -6,6 +6,7 @@ import Welcome from '../../components/Welcome';
 import Sections from '../Sections';
 import Profile from '../Profile';
 import Upload from './Upload';
+import Enrolled from './Enrolled';
 
 const home = '/app/student';
 
@@ -18,7 +19,7 @@ const menu = [{
   icon: 'face',
   title: 'Cargar imagen de rostro',
 }, {
-  to: '/section',
+  to: '/enrolled',
   icon: 'library_books',
   title: 'Secciones matriculadas',
 }, {
@@ -32,7 +33,7 @@ const Student = () => (
     <Switch>
       <Route exact path={home} component={Welcome} />
       <Route path={`${home}/profile`} component={Profile} />
-      <Route path={`${home}/section`} component={() => <h3>Sections</h3>} />
+      <Route path={`${home}/enrolled`} component={Enrolled} />
       <Route path={`${home}/history`} component={() => <h3>History</h3>} />
       <Route path={`${home}/upload`} component={Upload} />
       <Route path={`${home}/presencial`} component={Sections} />

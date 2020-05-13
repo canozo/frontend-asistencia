@@ -6,6 +6,7 @@ const UPDATE = 'salitec-web/auth/UPDATE';
 
 const defaultState = {
   token: '',
+  idUser: '',
   userType: '',
   names: '',
   surnames: '',
@@ -124,6 +125,7 @@ export function login(email, password) {
     const res = await apiLogin({ email, password });
     const payload = {
       token: res.token,
+      idUser: res.idUser,
       userType: res.user.userType,
       names: res.user.names,
       surnames: res.user.surnames,
@@ -141,6 +143,7 @@ export function signup() {
     const res = await apiSignup(payload);
     const loginData = {
       token: res.token,
+      idUser: res.idUser,
       userType: res.user.userType,
       names: res.user.names,
       surnames: res.user.surnames,

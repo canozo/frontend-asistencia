@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
-import config from '../../config';
+import config from '../../../config';
 
-async function apiSections(token, signal) {
-  const data = await fetch(`${config.server}/api/section`, {
+async function apiEnrolled(token, signal) {
+  const data = await fetch(`${config.server}/api/student/enrolled`, {
     method: 'get',
     signal,
     headers: {
@@ -20,13 +20,13 @@ async function apiSections(token, signal) {
   return res;
 }
 
-const Sections = ({ token }) => {
-  const [sections, setSections] = useState([]);
+const Enrolled = ({ token }) => {
+  const [enrolled, setEnrolled] = useState([]);
 
   useEffect(() => {
     const ac = new AbortController();
-    apiSections(token, ac.signal)
-      .then(res => setSections(res.data))
+    apiEnrolled(token, ac.signal)
+      .then(res => setEnrolled(res.data))
       .catch(err => console.log(err));
     return () => ac.abort();
   }, []);
@@ -52,7 +52,7 @@ const Sections = ({ token }) => {
           </tr>
         </thead>
         <tbody>
-          {sections.map(section => (
+          {enrolled.map(section => (
             <tr key={section.idSection}>
               <td>{section.idSection}</td>
               <td>{section.classCode}</td>
@@ -73,4 +73,4 @@ const mapStateToProps = state => ({
   token: state.auth.token,
 });
 
-export default connect(mapStateToProps)(Sections);
+export default connect(mapStateToProps)(Enrolled);
