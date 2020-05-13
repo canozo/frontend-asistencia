@@ -25,7 +25,8 @@ const menu = [{
 const MainComponent = ({ dispatch, open, idAttendanceLog }) => {
   useEffect(() => {
     const ac = new AbortController();
-    dispatch(isOpen(ac.signal));
+    dispatch(isOpen(ac.signal))
+      .catch(err => console.log(err));
     return () => ac.abort();
   }, []);
 

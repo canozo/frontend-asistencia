@@ -7,7 +7,7 @@ const store = createStore(rootReducer, loadState(), applyMiddleware(thunk));
 
 store.subscribe(() => {
   // TODO
-  console.log(store.getState());
+  // console.log(store.getState());
   saveState({
     auth: store.getState().auth,
   });

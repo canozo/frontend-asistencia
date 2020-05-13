@@ -1,5 +1,5 @@
-const ON_CHANGE = 'salitec-web/signup/ON_CHANGE';
-const CLEAR = 'salitec-web/signup/CLEAR';
+const ON_CHANGE = 'asistencia-web/signup/ON_CHANGE';
+const CLEAR = 'asistencia-web/signup/CLEAR';
 
 const defaultState = {
   names: '',

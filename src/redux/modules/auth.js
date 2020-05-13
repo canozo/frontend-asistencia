@@ -1,8 +1,8 @@
 import config from '../../config';
 
-const LOGIN = 'salitec-web/auth/LOGIN';
-const LOGOUT = 'salitec-web/auth/LOGOUT';
-const UPDATE = 'salitec-web/auth/UPDATE';
+const LOGIN = 'asitencia-web/auth/LOGIN';
+const LOGOUT = 'asitencia-web/auth/LOGOUT';
+const UPDATE = 'asitencia-web/auth/UPDATE';
 
 const defaultState = {
   token: '',
@@ -125,7 +125,7 @@ export function login(email, password) {
     const res = await apiLogin({ email, password });
     const payload = {
       token: res.token,
-      idUser: res.idUser,
+      idUser: res.user.idUser,
       userType: res.user.userType,
       names: res.user.names,
       surnames: res.user.surnames,
@@ -143,7 +143,7 @@ export function signup() {
     const res = await apiSignup(payload);
     const loginData = {
       token: res.token,
-      idUser: res.idUser,
+      idUser: res.user.idUser,
       userType: res.user.userType,
       names: res.user.names,
       surnames: res.user.surnames,
@@ -156,8 +156,9 @@ export function signup() {
 
 export function verify() {
   return async (dispatch, getState) => {
-    const token = getState().auth.token;
-    const iat = getState().auth.iat;
+    const state = getState();
+    const token = state.auth.token;
+    const iat = state.auth.iat;
     try {
       await apiVerify(token, iat);
     }

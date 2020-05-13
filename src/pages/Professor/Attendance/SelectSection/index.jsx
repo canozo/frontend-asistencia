@@ -48,6 +48,10 @@ const SelectSection = ({ dispatch, token }) => {
   };
 
   const submit = async () => {
+    if (!selected) {
+      setAlert('Seleccione una sección de la lista');
+      return resetAlert();
+    }
     try {
       await dispatch(open(selected));
       clearTimeout(alertTimer);
