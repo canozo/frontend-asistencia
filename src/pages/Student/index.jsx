@@ -7,6 +7,7 @@ import Sections from '../Sections';
 import Profile from '../Profile';
 import Upload from './Upload';
 import Enrolled from './Enrolled';
+import History from './History';
 
 const home = '/app/student';
 
@@ -34,7 +35,7 @@ const Student = () => (
       <Route exact path={home} component={Welcome} />
       <Route path={`${home}/profile`} component={Profile} />
       <Route path={`${home}/enrolled`} component={Enrolled} />
-      <Route path={`${home}/history`} component={() => <h3>History</h3>} />
+      <Route path={`${home}/history`} component={History} />
       <Route path={`${home}/upload`} component={Upload} />
       <Route path={`${home}/presencial`} component={Sections} />
       <Route component={Welcome} />

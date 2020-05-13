@@ -58,8 +58,8 @@ const SelectSection = ({ dispatch, token }) => {
     }
     catch (err) {
       setAlert(err.message);
+      resetAlert();
     }
-    resetAlert();
   };
 
   return (

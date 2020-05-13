@@ -34,9 +34,9 @@ const Enrolled = ({ token }) => {
   return (
     <div className="container-fluid fade-in">
       <h3 className="mb-4">
-        Secciones presenciales
+        Secciones matriculadas
         <br />
-        <small className="text-muted">Todas las secciones disponibles</small>
+        <small className="text-muted">Secciones en las que aparaces como estudiante</small>
       </h3>
 
       <Table striped bordered hover>
