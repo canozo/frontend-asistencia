@@ -24,5 +24,6 @@ yarn-error.log*
 *.env
 
 # others
-public/bundle.js
+bundle.js
+*.bundle.js
 ignore.me

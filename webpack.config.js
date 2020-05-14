@@ -1,15 +1,17 @@
+const path = require('path');
+
 module.exports = {
   devServer: {
-    contentBase: `${__dirname}/public`,
-    publicPath: '/',
+    contentBase: path.join(__dirname, 'public'),
     historyApiFallback: true,
     compress: true,
-    port: 3000
+    port: 3000,
   },
   entry: './src/index.jsx',
   output: {
-    path: `${__dirname}/public`,
-    filename: 'bundle.js'
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
+    path: path.join(__dirname, 'public'),
   },
   module: {
     rules: [
