@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
@@ -12,6 +12,10 @@ const Password = ({ dispatch }) => {
   const [repeat, setRepeat] = useState('');
   const [alert, setAlert] = useState(null);
   const [alertTimer, setAlertTimer] = useState(null);
+
+  useEffect(() => {
+    return () => clearTimeout(alertTimer);
+  }, [alertTimer]);
 
   const resetAlert = () => {
     if (alertTimer) {

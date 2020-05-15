@@ -15,6 +15,10 @@ const Update = ({ dispatch, userType, accountNumber, ...rest }) => {
   const [updateMsg, setUpdateMsg] = useState(null);
   const mounted = useRef(false);
 
+  useEffect(() => {
+    return () => clearTimeout(alertTimer);
+  }, [alertTimer]);
+
   const resetAlert = () => {
     if (alertTimer) {
       clearTimeout(alertTimer);

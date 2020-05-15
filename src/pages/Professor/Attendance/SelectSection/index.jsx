@@ -37,6 +37,10 @@ const SelectSection = ({ dispatch, token }) => {
     return () => ac.abort();
   }, []);
 
+  useEffect(() => {
+    return () => clearTimeout(alertTimer);
+  }, [alertTimer]);
+
   const resetAlert = () => {
     if (alertTimer) {
       clearTimeout(alertTimer);
