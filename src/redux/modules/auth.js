@@ -106,7 +106,7 @@ export function verify() {
 export function updateProfile(payload) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    await api('/auth', 'put', payload, token);
+    await api('/user', 'put', payload, token);
     return dispatch({ type: UPDATE, payload });
   };
 }

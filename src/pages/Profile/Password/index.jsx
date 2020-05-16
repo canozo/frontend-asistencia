@@ -1,31 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { updatePassword } from '../../../redux/modules/auth';
 import TextField from '../../../components/TextField';
+import TimedAlert from '../../../components/TimedAlert';
 import config from '../../../config';
 
 const Password = ({ dispatch }) => {
   const [password, setPassword] = useState('');
   const [repeat, setRepeat] = useState('');
   const [alert, setAlert] = useState(null);
-  const [alertTimer, setAlertTimer] = useState(null);
-
-  useEffect(() => {
-    return () => clearTimeout(alertTimer);
-  }, [alertTimer]);
-
-  const resetAlert = () => {
-    if (alertTimer) {
-      clearTimeout(alertTimer);
-    }
-
-    setAlertTimer(setTimeout(() => {
-      setAlert(null);
-    }, 5000));
-  };
 
   const submit = async event => {
     event.preventDefault();
@@ -42,7 +27,6 @@ const Password = ({ dispatch }) => {
         setAlert(err.message);
       }
     }
-    resetAlert();
   };
 
   return (
@@ -79,13 +63,7 @@ const Password = ({ dispatch }) => {
       </div>
 
       {/* Password update error */}
-      <Alert
-        className="fade-in"
-        show={alert !== null}
-        variant={alert === 'success' ? 'success' : 'danger'}
-      >
-        {alert === 'success' ? 'Se cambió su contraseña!' : alert}
-      </Alert>
+      <TimedAlert type={alert} reset={() => setAlert(null)} success="Se cambió su contraseña!" />
 
       {/* Submit password */}
       <Button type="submit" variant="primary" className="mt-1" block>

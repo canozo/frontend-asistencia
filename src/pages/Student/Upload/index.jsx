@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
+import TimedAlert from '../../../components/TimedAlert';
 import config from '../../../config';
 import api from '../../../request';
 
@@ -27,7 +27,6 @@ const Upload = ({ token }) => {
   const [faces, setFaces] = useState([]);
   const [file, setFile] = useState(null);
   const [alert, setAlert] = useState(null);
-  const [alertTimer, setAlertTimer] = useState(null);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -36,20 +35,6 @@ const Upload = ({ token }) => {
       .catch(err => console.log(err));
     return () => ac.abort();
   }, []);
-
-  useEffect(() => {
-    return () => clearTimeout(alertTimer);
-  }, [alertTimer]);
-
-  const resetAlert = () => {
-    if (alertTimer) {
-      clearTimeout(alertTimer);
-    }
-
-    setAlertTimer(setTimeout(() => {
-      setAlert(null);
-    }, 5000));
-  };
 
   const fileChange = e => {
     const nextSib = e.target.nextElementSibling;
@@ -65,13 +50,11 @@ const Upload = ({ token }) => {
 
       try {
         const some = await apiUpload(token, data);
-        console.log(some);
         setAlert('success');
       }
       catch (err) {
         setAlert(err.message);
       }
-      resetAlert();
     }
   };
 
@@ -134,13 +117,7 @@ const Upload = ({ token }) => {
 
 
             {/* Upload error */}
-            <Alert
-              className="fade-in"
-              show={alert !== null}
-              variant={alert === 'success' ? 'success' : 'danger'}
-            >
-              {alert === 'success' ? 'Se cargó su imagen!' : alert}
-            </Alert>
+            <TimedAlert type={alert} reset={() => setAlert(null)} success="Se cargó su imagen!" />
 
             {/* Submit */}
             <Button type="submit" variant="primary" className="mt-1" block>

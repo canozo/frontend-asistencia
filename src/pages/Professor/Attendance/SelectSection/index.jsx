@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import Alert from 'react-bootstrap/Alert';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { open } from '../../../../redux/modules/attendance';
+import TimedAlert from '../../../../components/TimedAlert';
 import api from '../../../../request';
 
 const SelectSection = ({ dispatch, token }) => {
   const [enrolled, setEnrolled] = useState([]);
   const [selected, setSelected] = useState(null);
   const [alert, setAlert] = useState(null);
-  const [alertTimer, setAlertTimer] = useState(null);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -20,32 +19,15 @@ const SelectSection = ({ dispatch, token }) => {
     return () => ac.abort();
   }, []);
 
-  useEffect(() => {
-    return () => clearTimeout(alertTimer);
-  }, [alertTimer]);
-
-  const resetAlert = () => {
-    if (alertTimer) {
-      clearTimeout(alertTimer);
-    }
-
-    setAlertTimer(setTimeout(() => {
-      setAlert(null);
-    }, 5000));
-  };
-
   const submit = async () => {
     if (!selected) {
-      setAlert('Seleccione una sección de la lista');
-      return resetAlert();
+      return setAlert('Seleccione una sección de la lista');
     }
     try {
       await dispatch(open(selected));
-      clearTimeout(alertTimer);
     }
     catch (err) {
       setAlert(err.message);
-      resetAlert();
     }
   };
 
@@ -58,13 +40,7 @@ const SelectSection = ({ dispatch, token }) => {
       </h3>
 
       {/* Open atendance error */}
-      <Alert
-        className="fade-in"
-        show={alert !== null && alert !== 'success'}
-        variant="danger"
-      >
-        {alert}
-      </Alert>
+      <TimedAlert type={alert} reset={() => setAlert(null)} />
 
       <Table striped bordered hover>
         <thead>

@@ -2,32 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Alert from 'react-bootstrap/Alert';
 import { updateProfile } from '../../../redux/modules/auth';
 import TextField from '../../../components/TextField';
+import TimedAlert from '../../../components/TimedAlert';
 
 const Update = ({ dispatch, userType, accountNumber, ...rest }) => {
   const [names, setNames] = useState(rest.names);
   const [surnames, setSurnames] = useState(rest.surnames);
   const [email, setEmail] = useState(rest.email.split('@')[0]);
   const [timer, setTimer] = useState(null);
-  const [alertTimer, setAlertTimer] = useState(null);
-  const [updateMsg, setUpdateMsg] = useState(null);
+  const [alert, setAlert] = useState(null);
   const mounted = useRef(false);
-
-  useEffect(() => {
-    return () => clearTimeout(alertTimer);
-  }, [alertTimer]);
-
-  const resetAlert = () => {
-    if (alertTimer) {
-      clearTimeout(alertTimer);
-    }
-
-    setAlertTimer(setTimeout(() => {
-      setUpdateMsg(null);
-    }, 5000));
-  };
 
   useEffect(() => {
     if (!mounted.current) {
@@ -46,12 +31,11 @@ const Update = ({ dispatch, userType, accountNumber, ...rest }) => {
         };
         try {
           await dispatch(updateProfile(payload));
-          setUpdateMsg('success');
+          setAlert('success');
         }
         catch (err) {
-          setUpdateMsg(err.message);
+          setAlert(err.message);
         }
-        resetAlert();
       }, 2000));
     }
   }, [names, surnames, email]);
@@ -117,13 +101,7 @@ const Update = ({ dispatch, userType, accountNumber, ...rest }) => {
       </div>
 
       {/* Profile update error */}
-      <Alert
-        className="fade-in"
-        show={updateMsg !== null}
-        variant={updateMsg === 'success' ? 'success' : 'danger'}
-      >
-        {updateMsg === 'success' ? 'Se modificaron sus datos!' : updateMsg}
-      </Alert>
+      <TimedAlert type={alert} reset={() => setAlert(null)} success="Se modificaron sus datos!" />
     </>
   );
 };
