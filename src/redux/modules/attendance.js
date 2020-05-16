@@ -1,4 +1,4 @@
-import config from '../../config';
+import api from '../../request';
 
 const ON_CHANGE = 'asistencia-web/attendance/ON_CHANGE';
 const MARK = 'asistencia-web/attendance/MARK';
@@ -60,110 +60,11 @@ export default function reducer(state = defaultState, action = {}) {
   }
 }
 
-async function apiNew(token, idSection) {
-  const data = await fetch(`${config.server}/api/attendance`, {
-    method: 'post',
-    body: JSON.stringify({ idSection }),
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiClose(token, idAttendanceLog) {
-  const data = await fetch(`${config.server}/api/attendance/${idAttendanceLog}`, {
-    method: 'put',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiGet(token, idAttendanceLog, signal) {
-  const data = await fetch(`${config.server}/api/attendance/${idAttendanceLog}`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiInfo(token, signal) {
-  const data = await fetch(`${config.server}/api/attendance`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiMark(token, idAttendanceLog, idStudent) {
-  const data = await fetch(`${config.server}/api/attendance/${idAttendanceLog}/mark/${idStudent}`, {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiUnmark(token, idAttendanceLog, idStudent) {
-  const data = await fetch(`${config.server}/api/attendance/${idAttendanceLog}/mark/${idStudent}`, {
-    method: 'delete',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
 export function open(idSection) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    await apiNew(token, idSection);
-    const res = await apiInfo(token);
+    await api('/attendance', 'post', { idSection }, token);
+    const res = await api('/attendance', 'get', undefined, token);
     const payload = {
       idAttendanceLog: res.data.idAttendanceLog,
       idSection: res.data.idSection,
@@ -177,7 +78,7 @@ export function open(idSection) {
 export function isOpen(signal) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    const res = await apiInfo(token, signal);
+    const res = await api('/attendance', 'get', undefined, token, signal);
     if (res.data) {
       const payload = {
         idAttendanceLog: res.data.idAttendanceLog,
@@ -193,7 +94,7 @@ export function isOpen(signal) {
 export function getAttendance(id, signal) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    const res = await apiGet(token, id, signal);
+    const res = await api(`/attendance/${id}`, 'get', undefined, token, signal);
     return dispatch({ type: ON_CHANGE, payload: { students: res.data } });
   };
 }
@@ -201,7 +102,7 @@ export function getAttendance(id, signal) {
 export function closeRequest(id) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    await apiClose(token, id);
+    await api(`/attendance/${id}`, 'put', undefined, token);
     return dispatch({ type: CLOSE });
   };
 }
@@ -210,8 +111,8 @@ export function mark(idStudent) {
   return async (dispatch, getState) => {
     const state = getState();
     const token = state.auth.token;
-    const idAttendanceLog = state.attendance.idAttendanceLog;
-    await apiMark(token, idAttendanceLog, idStudent);
+    const id = state.attendance.idAttendanceLog;
+    await api( `/attendance/${id}/mark/${idStudent}`, 'post', undefined, token);
     const idMarkedBy = state.auth.idUser;
     return dispatch({ type: MARK, payload: { idStudent, idMarkedBy } });
   };
@@ -221,8 +122,8 @@ export function unmark(idStudent) {
   return async (dispatch, getState) => {
     const state = getState();
     const token = state.auth.token;
-    const idAttendanceLog = state.attendance.idAttendanceLog;
-    await apiUnmark(token, idAttendanceLog, idStudent);
+    const id = state.attendance.idAttendanceLog;
+    await api(`/attendance/${id}/mark/${idStudent}`, 'delete', undefined, token);
     return dispatch({ type: UNMARK, payload: { idStudent } });
   };
 }

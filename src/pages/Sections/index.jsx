@@ -1,31 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
-import config from '../../config';
-
-async function apiSections(token, signal) {
-  const data = await fetch(`${config.server}/api/section`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
+import api from '../../request';
 
 const Sections = ({ token }) => {
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
     const ac = new AbortController();
-    apiSections(token, ac.signal)
+    api('/section', 'get', undefined, token, ac.signal)
       .then(res => setSections(res.data))
       .catch(err => console.log(err));
     return () => ac.abort();

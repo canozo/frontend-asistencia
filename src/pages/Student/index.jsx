@@ -45,6 +45,8 @@ const Student = () => (
 
 const StudentDropdown = () => <MobileItem menu={menu} home={home} />;
 
+export default Student;
+
 export {
   Student,
   StudentDropdown,

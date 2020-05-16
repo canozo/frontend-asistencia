@@ -4,24 +4,7 @@ import Alert from 'react-bootstrap/Alert';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { open } from '../../../../redux/modules/attendance';
-import config from '../../../../config';
-
-async function apiEnrolled(token, signal) {
-  const data = await fetch(`${config.server}/api/professor/enrolled`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
+import api from '../../../../request';
 
 const SelectSection = ({ dispatch, token }) => {
   const [enrolled, setEnrolled] = useState([]);
@@ -31,7 +14,7 @@ const SelectSection = ({ dispatch, token }) => {
 
   useEffect(() => {
     const ac = new AbortController();
-    apiEnrolled(token, ac.signal)
+    api('/professor/enrolled', 'get', undefined, token, ac.signal)
       .then(res => setEnrolled(res.data))
       .catch(err => console.log(err));
     return () => ac.abort();

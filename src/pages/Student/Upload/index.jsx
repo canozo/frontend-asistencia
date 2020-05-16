@@ -4,8 +4,9 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import config from '../../../config';
+import api from '../../../request';
 
-const server = `${config.server}/api/student/upload`;
+const server = `${config.server}/api`;
 
 async function apiUpload(token, formData) {
   const data = await fetch(server, {
@@ -13,23 +14,6 @@ async function apiUpload(token, formData) {
     body: formData,
     headers: {
       Authorization: `Bearer ${token}`,
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiGetFaces(token, signal) {
-  const data = await fetch(`${config.server}/api/student/faces`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
     },
   });
   const res = await data.json();
@@ -47,7 +31,7 @@ const Upload = ({ token }) => {
 
   useEffect(() => {
     const ac = new AbortController();
-    apiGetFaces(token, ac.signal)
+    api('/student/faces', 'get', undefined, token, ac.signal)
       .then(res => setFaces(res.data))
       .catch(err => console.log(err));
     return () => ac.abort();

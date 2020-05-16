@@ -4,24 +4,7 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Alert from 'react-bootstrap/Alert';
 import Table from 'react-bootstrap/Table';
-import config from '../../../config';
-
-async function apiHistory(token, signal) {
-  const data = await fetch(`${config.server}/api/student/attendance`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
+import api from '../../../request';
 
 const History = ({ token, accountNumber }) => {
   const [history, setHistory] = useState([]);
@@ -29,19 +12,11 @@ const History = ({ token, accountNumber }) => {
 
   useEffect(() => {
     const ac = new AbortController();
-    apiHistory(token, ac.signal)
+    api('/student/attendance', 'get', undefined, token, ac.signal)
       .then(res => setHistory(res.data))
-      .catch(err => console.log(err));
+      .catch(err => setAlert(err.message));
     return () => ac.abort();
   }, []);
-
-  // idSection
-  // idLog
-  // idProfessor
-  // idMarkedBy
-  // markedAt
-  // className
-  // classCode
 
   return (
     <div className="container-fluid fade-in">

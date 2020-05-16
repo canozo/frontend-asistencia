@@ -26,6 +26,8 @@ const Camera = () => (
 
 const CameraDropdown = () => <MobileItem menu={menu} home={home} />;
 
+export default Camera;
+
 export {
   Camera,
   CameraDropdown,

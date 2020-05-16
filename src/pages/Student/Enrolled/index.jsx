@@ -1,31 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
-import config from '../../../config';
-
-async function apiEnrolled(token, signal) {
-  const data = await fetch(`${config.server}/api/student/enrolled`, {
-    method: 'get',
-    signal,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
+import api from '../../../request';
 
 const Enrolled = ({ token }) => {
   const [enrolled, setEnrolled] = useState([]);
 
   useEffect(() => {
     const ac = new AbortController();
-    apiEnrolled(token, ac.signal)
+    api('/student/enrolled', 'get', undefined, token, ac.signal)
       .then(res => setEnrolled(res.data))
       .catch(err => console.log(err));
     return () => ac.abort();

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './NotFound.scss';
 
 const NotFound = () => {
   return (
-    <div id="not-found-container">
+    <div className="crosshair">
       <h3 className="text-center p-5">
         Página no encontrada
         <br />

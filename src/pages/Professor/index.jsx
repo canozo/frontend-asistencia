@@ -58,6 +58,8 @@ const mapStateToProps = state => ({
 const Professor = connect(mapStateToProps)(MainComponent);
 const ProfessorDropdown = () => <MobileItem menu={menu} home={home} />;
 
+export default Professor;
+
 export {
   Professor,
   ProfessorDropdown,

@@ -5,6 +5,16 @@ import Dashboard from '../../components/Dashboard';
 import Welcome from '../../components/Welcome';
 import Profile from '../Profile';
 import Sections from '../Sections';
+import Campus from './Campus';
+import Building from './Building';
+import Classroom from './Classroom';
+import Semester from './Semester';
+import Class from './Class';
+import Section from './Section';
+import Student from './Student';
+import Professor from './Professor';
+import Personnel from './Personnel';
+import Camera from './Camera';
 
 const home = '/app/admin';
 
@@ -67,16 +77,17 @@ const Admin = () => (
     <Switch>
       <Route exact path={home} component={Welcome} />
       <Route path={`${home}/profile`} component={Profile} />
-      <Route path={`${home}/campus`} component={() => <h3>/campus</h3>} />
-      <Route path={`${home}/building`} component={() => <h3>/building</h3>} />
-      <Route path={`${home}/classroom`} component={() => <h3>/classroom</h3>} />
-      <Route path={`${home}/semester`} component={() => <h3>/semester</h3>} />
-      <Route path={`${home}/class`} component={() => <h3>/class</h3>} />
-      <Route path={`${home}/section`} component={() => <h3>/section</h3>} />
-      <Route path={`${home}/student`} component={() => <h3>/student</h3>} />
-      <Route path={`${home}/professor`} component={() => <h3>/professor</h3>} />
-      <Route path={`${home}/personnel`} component={() => <h3>/personnel</h3>} />
-      <Route path={`${home}/camera`} component={() => <h3>/camera</h3>} />
+      <Route path={`${home}/campus`} component={Campus} />
+      <Route path={`${home}/building`} component={Building} />
+      <Route path={`${home}/classroom`} component={Classroom} />
+      <Route path={`${home}/semester`} component={Semester} />
+      <Route path={`${home}/class`} component={Class} />
+      <Route path={`${home}/section`} component={Section} />
+      {/* For this type of users, only create and delete */}
+      <Route path={`${home}/student`} component={Student} />
+      <Route path={`${home}/professor`} component={Professor} />
+      <Route path={`${home}/personnel`} component={Personnel} />
+      <Route path={`${home}/camera`} component={Camera} />
       <Route path={`${home}/presencial`} component={Sections} />
       <Route component={Welcome} />
     </Switch>
@@ -84,6 +95,8 @@ const Admin = () => (
 );
 
 const AdminDropdown = () => <MobileItem menu={menu} home={home} />;
+
+export default Admin;
 
 export {
   Admin,

@@ -1,4 +1,5 @@
 import config from '../../config';
+import api from '../../request';
 
 const LOGIN = 'asitencia-web/auth/LOGIN';
 const LOGOUT = 'asitencia-web/auth/LOGOUT';
@@ -54,75 +55,9 @@ async function apiVerify(token, iat) {
   return res;
 }
 
-async function apiLogin(payload) {
-  const data = await fetch(`${config.server}/api/auth/login`, {
-    method: 'post',
-    body: JSON.stringify(payload),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiSignup(payload) {
-  const data = await fetch(`${config.server}/api/auth/register`, {
-    method: 'post',
-    body: JSON.stringify(payload),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiUpdateProfile(token, payload) {
-  const data = await fetch(`${config.server}/api/user`, {
-    method: 'put',
-    body: JSON.stringify(payload),
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
-async function apiUpdatePassword(token, password) {
-  const data = await fetch(`${config.server}/api/user/pw`, {
-    method: 'put',
-    body: JSON.stringify({ password }),
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const res = await data.json();
-  if (res.status === 'error') {
-    throw new Error(res.msg);
-  }
-  return res;
-}
-
 export function login(email, password) {
   return async dispatch => {
-    const res = await apiLogin({ email, password });
+    const res = await api('/auth/login', 'post', { email, password });
     const payload = {
       token: res.token,
       idUser: res.user.idUser,
@@ -140,7 +75,7 @@ export function signup() {
   return async (dispatch, getState) => {
     const { signup } = getState();
     const payload = { ...signup, email: `${signup.email}@unitec.edu` };
-    const res = await apiSignup(payload);
+    const res = await api('/auth/register', 'post', payload);
     const loginData = {
       token: res.token,
       idUser: res.user.idUser,
@@ -171,7 +106,7 @@ export function verify() {
 export function updateProfile(payload) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    await apiUpdateProfile(token, payload);
+    await api('/auth', 'put', payload, token);
     return dispatch({ type: UPDATE, payload });
   };
 }
@@ -179,7 +114,7 @@ export function updateProfile(payload) {
 export function updatePassword(password) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    return await apiUpdatePassword(token, password);
+    return await api('/user/pw', 'put', { password }, token);
   };
 }
 

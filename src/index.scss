@@ -27,6 +27,13 @@ body, html, #root {
   cursor: pointer;
 }
 
+.crosshair {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .vertical-center {
   min-height: 100%;
   min-height: 100vh;

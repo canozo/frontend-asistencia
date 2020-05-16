@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { verify } from '../../redux/modules/auth';
-import { Admin, AdminDropdown } from '../Admin';
-import { Student, StudentDropdown } from '../Student';
-import { Professor, ProfessorDropdown } from '../Professor';
-import { Camera, CameraDropdown } from '../Camera';
+import { AdminDropdown } from '../Admin';
+import { StudentDropdown } from '../Student';
+import { ProfessorDropdown } from '../Professor';
+import { CameraDropdown } from '../Camera';
+import Loading from '../../components/Loading';
 import Gateway from './Gateway';
 import NotFound from '../NotFound';
 import './App.scss';
+
+const Admin = React.lazy(() => import('../Admin'));
+const Student = React.lazy(() => import('../Student'));
+const Professor = React.lazy(() => import('../Professor'));
+const Camera = React.lazy(() => import('../Camera'));
 
 const home = '/app';
 
@@ -67,14 +73,16 @@ const App = ({ dispatch, logged, userType, names, surnames }) => {
           </Link>
         </Navbar.Collapse>
       </Navbar>
-      <Switch>
-        <Route exact path={home} component={Gateway} />
-        <Route path={`${home}/admin`} component={Admin} />
-        <Route path={`${home}/student`} component={Student} />
-        <Route path={`${home}/professor`} component={Professor} />
-        <Route path={`${home}/camera`} component={Camera} />
-        <Route component={NotFound} />
-      </Switch>
+      <Suspense fallback={Loading()}>
+        <Switch>
+          <Route exact path={home} component={Gateway} />
+          <Route path={`${home}/admin`} component={Admin} />
+          <Route path={`${home}/student`} component={Student} />
+          <Route path={`${home}/professor`} component={Professor} />
+          <Route path={`${home}/camera`} component={Camera} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
     </div>
   );
 };
