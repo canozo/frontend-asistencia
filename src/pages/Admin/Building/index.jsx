@@ -11,9 +11,9 @@ import api from '../../../request';
 const Building = ({ token }) => {
   const [list, setList] = useState([]);
   const [alert, setAlert] = useState(null);
-  const [idUpdate, setIdUpdate] = useState('');
-  const [idDelete, setIdDelete] = useState('');
-  const [idCampus, setIdCampus] = useState('');
+  const [idUpdate, setIdUpdate] = useState(0);
+  const [idDelete, setIdDelete] = useState(0);
+  const [idCampus, setIdCampus] = useState(0);
   const [alias, setAlias] = useState('');
   const [campusList, setCampusList] = useState([]);
 
@@ -41,7 +41,7 @@ const Building = ({ token }) => {
       } catch (err) {
         setAlert(err.message);
       }
-      setIdDelete('');
+      setIdDelete(0);
     } else {
       setIdDelete(id);
     }
@@ -54,8 +54,8 @@ const Building = ({ token }) => {
   };
 
   const cancel = () => {
-    setIdUpdate('');
-    setIdCampus('');
+    setIdUpdate(0);
+    setIdCampus(0);
     setAlias('');
   };
 
@@ -86,8 +86,8 @@ const Building = ({ token }) => {
       }
 
       setAlert('success');
-      setIdUpdate('');
-      setIdCampus('');
+      setIdUpdate(0);
+      setIdCampus(0);
       setAlias('');
     } catch (err) {
       setAlert(err.message);
@@ -136,7 +136,7 @@ const Building = ({ token }) => {
             <TextField
               id="building-alias"
               type="text"
-              label="Alias"
+              label="Edificio"
               required
               value={alias}
               onChange={e => setAlias(e.target.value)}
@@ -165,7 +165,7 @@ const Building = ({ token }) => {
             <th>Acciones</th>
             <th>#</th>
             <th>Campus</th>
-            <th>Alias</th>
+            <th>Edificio</th>
           </tr>
         </thead>
         <tbody>
@@ -202,7 +202,7 @@ const Building = ({ token }) => {
       {/* Modal delete item */}
       <Modal
         show={idDelete ? true : false}
-        onHide={() => setIdDelete('')}
+        onHide={() => setIdDelete(0)}
         aria-labelledby="modal-building"
         centered
       >
@@ -215,7 +215,7 @@ const Building = ({ token }) => {
           ¿Estás segur@ de que deseas eliminar el edificio? Una vez eliminado, no podrá ser recuperado.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setIdDelete('')}>
+          <Button variant="secondary" onClick={() => setIdDelete(0)}>
             Volver
           </Button>
           <Button variant="danger" onClick={() => remove(idDelete)}>

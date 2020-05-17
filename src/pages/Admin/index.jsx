@@ -83,7 +83,6 @@ const Admin = () => (
       <Route path={`${home}/semester`} component={Semester} />
       <Route path={`${home}/class`} component={Class} />
       <Route path={`${home}/section`} component={Section} />
-      {/* For this type of users, only create and delete */}
       <Route path={`${home}/student`} component={Student} />
       <Route path={`${home}/professor`} component={Professor} />
       <Route path={`${home}/personnel`} component={Personnel} />

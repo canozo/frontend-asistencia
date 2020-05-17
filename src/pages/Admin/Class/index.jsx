@@ -11,8 +11,8 @@ import api from '../../../request';
 const Class = ({ token }) => {
   const [list, setList] = useState([]);
   const [alert, setAlert] = useState(null);
-  const [idUpdate, setIdUpdate] = useState('');
-  const [idDelete, setIdDelete] = useState('');
+  const [idUpdate, setIdUpdate] = useState(0);
+  const [idDelete, setIdDelete] = useState(0);
   const [classCode, setCode] = useState('');
   const [className, setName] = useState('');
   const [comments, setComments] = useState('');
@@ -35,7 +35,7 @@ const Class = ({ token }) => {
       } catch (err) {
         setAlert(err.message);
       }
-      setIdDelete('');
+      setIdDelete(0);
     } else {
       setIdDelete(id);
     }
@@ -49,7 +49,7 @@ const Class = ({ token }) => {
   };
 
   const cancel = () => {
-    setIdUpdate('');
+    setIdUpdate(0);
     setCode('');
     setName('');
     setComments('');
@@ -73,7 +73,7 @@ const Class = ({ token }) => {
       }
 
       setAlert('success');
-      setIdUpdate('');
+      setIdUpdate(0);
       setCode('');
       setName('');
       setComments('');
@@ -197,7 +197,7 @@ const Class = ({ token }) => {
       {/* Modal delete item */}
       <Modal
         show={idDelete ? true : false}
-        onHide={() => setIdDelete('')}
+        onHide={() => setIdDelete(0)}
         aria-labelledby="modal-class"
         centered
       >
@@ -210,7 +210,7 @@ const Class = ({ token }) => {
           ¿Estás segur@ de que deseas eliminar la clase? Una vez eliminado, no podrá ser recuperado.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setIdDelete('')}>
+          <Button variant="secondary" onClick={() => setIdDelete(0)}>
             Volver
           </Button>
           <Button variant="danger" onClick={() => remove(idDelete)}>

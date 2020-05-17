@@ -55,7 +55,6 @@ const App = ({ dispatch, logged, userType, names, surnames }) => {
                   Perfil
                 </NavDropdown.Item>
               </Link>
-              <NavDropdown.Divider />
               <Switch>
                 <Route path={`${home}/admin`} component={AdminDropdown} />
                 <Route path={`${home}/student`} component={StudentDropdown} />

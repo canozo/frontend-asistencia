@@ -13,7 +13,7 @@ import api from '../../../request';
 const Student = ({ token }) => {
   const [list, setList] = useState([]);
   const [alert, setAlert] = useState(null);
-  const [idDelete, setIdDelete] = useState('');
+  const [idDelete, setIdDelete] = useState(0);
   const [names, setNames] = useState('');
   const [surnames, setSurnames] = useState('');
   const [email, setEmail] = useState('');
@@ -38,7 +38,7 @@ const Student = ({ token }) => {
       } catch (err) {
         setAlert(err.message);
       }
-      setIdDelete('');
+      setIdDelete(0);
     } else {
       setIdDelete(id);
     }
@@ -206,7 +206,7 @@ const Student = ({ token }) => {
       {/* Modal delete item */}
       <Modal
         show={idDelete ? true : false}
-        onHide={() => setIdDelete('')}
+        onHide={() => setIdDelete(0)}
         aria-labelledby="modal-student"
         centered
       >
@@ -219,7 +219,7 @@ const Student = ({ token }) => {
           ¿Estás segur@ de que deseas eliminar al estudiante? Una vez eliminado, no podrá ser recuperado.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setIdDelete('')}>
+          <Button variant="secondary" onClick={() => setIdDelete(0)}>
             Volver
           </Button>
           <Button variant="danger" onClick={() => remove(idDelete)}>

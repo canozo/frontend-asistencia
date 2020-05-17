@@ -11,8 +11,8 @@ import api from '../../../request';
 const Campus = ({ token }) => {
   const [list, setList] = useState([]);
   const [alert, setAlert] = useState(null);
-  const [idUpdate, setIdUpdate] = useState('');
-  const [idDelete, setIdDelete] = useState('');
+  const [idUpdate, setIdUpdate] = useState(0);
+  const [idDelete, setIdDelete] = useState(0);
   const [campus, setCampus] = useState('');
   const [alias, setAlias] = useState('');
 
@@ -34,7 +34,7 @@ const Campus = ({ token }) => {
       } catch (err) {
         setAlert(err.message);
       }
-      setIdDelete('');
+      setIdDelete(0);
     } else {
       setIdDelete(id);
     }
@@ -47,7 +47,7 @@ const Campus = ({ token }) => {
   };
 
   const cancel = () => {
-    setIdUpdate('');
+    setIdUpdate(0);
     setCampus('');
     setAlias('');
   };
@@ -70,7 +70,7 @@ const Campus = ({ token }) => {
       }
 
       setAlert('success');
-      setIdUpdate('');
+      setIdUpdate(0);
       setCampus('');
       setAlias('');
     } catch (err) {
@@ -177,7 +177,7 @@ const Campus = ({ token }) => {
       {/* Modal delete item */}
       <Modal
         show={idDelete ? true : false}
-        onHide={() => setIdDelete('')}
+        onHide={() => setIdDelete(0)}
         aria-labelledby="modal-campus"
         centered
       >
@@ -190,7 +190,7 @@ const Campus = ({ token }) => {
           ¿Estás segur@ de que deseas eliminar el campus? Una vez eliminado, no podrá ser recuperado.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setIdDelete('')}>
+          <Button variant="secondary" onClick={() => setIdDelete(0)}>
             Volver
           </Button>
           <Button variant="danger" onClick={() => remove(idDelete)}>
