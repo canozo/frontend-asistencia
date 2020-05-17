@@ -159,12 +159,13 @@ const Classroom = ({ token }) => {
             </Form.Group>
           </div>
           <div className="col-lg-6">
-            {/* Edificio */}
+            {/* Building */}
             <Form.Group controlId="classroom-building">
               <Form.Label>Edificio</Form.Label>
               <Form.Control
                 as="select"
                 value={idBuilding}
+                disabled={!idCampus}
                 onChange={e => setIdBuilding(e.target.value)}
                 required
                 custom
