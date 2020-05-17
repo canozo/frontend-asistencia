@@ -46,7 +46,7 @@ const Login = ({ dispatch, logged }) => {
               <h3>Iniciar sesión</h3>
               <h6 className="mb-4">
                 <small className="text-muted">
-                  v0.0.4
+                  v0.1.0
                 </small>
               </h6>
 
