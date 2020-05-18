@@ -119,10 +119,12 @@ const Section = ({ token }) => {
       const classroom = classroomList.find(item => item.id === Number(idClassroom)).val;
       const alias = classroom.split('Aula: ')[1].split(',')[0];
 
+      // TODO
       const days = {
         idSection: res.id,
         idDays: [2, 3, 4, 5, 6],
       };
+      const daysString = 'LuMaMiJu';
       await api('/section/days', 'post', days, token);
 
       setList([...list, {
@@ -142,7 +144,7 @@ const Section = ({ token }) => {
         finishTime: timeList.find(item => item.id === Number(idFinishTime)).val,
         idProfessor,
         professor: professorList.find(item => item.id === Number(idProfessor)).val,
-        days: 'LuMaMiJu',
+        days: daysString,
         comments,
       }]);
 

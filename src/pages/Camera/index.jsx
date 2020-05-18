@@ -4,6 +4,7 @@ import MobileItem from '../../components/MobileItem';
 import Dashboard from '../../components/Dashboard';
 import Welcome from '../../components/Welcome';
 import Profile from '../Profile';
+import Marked from './Marked';
 
 const home = '/app/camera';
 
@@ -18,7 +19,7 @@ const Camera = () => (
     <Switch>
       <Route exact path={home} component={Welcome} />
       <Route path={`${home}/profile`} component={Profile} />
-      <Route path={`${home}/marked`} component={() => <h3>/marked</h3>} />
+      <Route path={`${home}/marked`} component={Marked} />
       <Route component={Welcome} />
     </Switch>
   </Dashboard>
