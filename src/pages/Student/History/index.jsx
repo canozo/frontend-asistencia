@@ -42,13 +42,14 @@ const History = ({ token, accountNumber }) => {
             <th>Estado</th>
             <th>Sección</th>
             <th>Clase</th>
+            <th>Fecha</th>
             <th>Marcado por</th>
           </tr>
         </thead>
         <tbody>
           {history.map(his => (
             <tr key={`${accountNumber}-${his.idLog}`}>
-              <td>
+              <td style={{ width: '192px' }}>
                 <ToggleButtonGroup
                   name="radio-student-present"
                   className="w-100"
@@ -73,6 +74,7 @@ const History = ({ token, accountNumber }) => {
               </td>
               <td>{his.idSection}</td>
               <td>{his.classCode} - {his.className}</td>
+              <td>{new Date(his.openedAt).toLocaleString()}</td>
               <td>
                 {his.idMarkedBy ? (
                   his.idMarkedBy === his.idProfessor ? 'Profesor' : 'Cámara'

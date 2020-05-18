@@ -72,7 +72,7 @@ const Marked = ({ token }) => {
               <td>{item.classCode} - {item.className}</td>
               <td>{item.student}</td>
               <td>{item.accountNumber}</td>
-              <td>{new Date(item.markedAt).toString()}</td>
+              <td>{new Date(item.markedAt).toLocaleString()}</td>
               <td><img style={{ height: '64px', width: '64px' }} src={images[i]} /></td>
             </tr>
           ))}
