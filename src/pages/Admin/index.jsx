@@ -15,6 +15,7 @@ import Student from './Student';
 import Professor from './Professor';
 import Personnel from './Personnel';
 import Camera from './Camera';
+import Enroll from './Enroll';
 
 const home = '/app/admin';
 
@@ -46,6 +47,12 @@ const menu = [{
   to: '/section',
   icon: 'schedule',
   title: 'Secciones',
+}, {
+  division: 'Matricular',
+}, {
+  to: '/enroll',
+  icon: 'add_box',
+  title: 'Matricular estudiante',
 }, {
   division: 'Usuarios',
 }, {
@@ -83,6 +90,7 @@ const Admin = () => (
       <Route path={`${home}/semester`} component={Semester} />
       <Route path={`${home}/class`} component={Class} />
       <Route path={`${home}/section`} component={Section} />
+      <Route path={`${home}/enroll`} component={Enroll} />
       <Route path={`${home}/student`} component={Student} />
       <Route path={`${home}/professor`} component={Professor} />
       <Route path={`${home}/personnel`} component={Personnel} />
