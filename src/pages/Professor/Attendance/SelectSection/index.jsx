@@ -74,7 +74,7 @@ const SelectSection = ({ dispatch, token }) => {
       <div className="row">
         <div className="col-lg-2 offset-lg-10">
           <Button onClick={submit} variant="primary" block>
-            Arbir asistencia
+            Abrir asistencia
           </Button>
         </div>
       </div>
