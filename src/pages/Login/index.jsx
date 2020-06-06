@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { clear } from '../../redux/modules/signup';
 import { login } from '../../redux/modules/auth';
 import TextField from '../../components/TextField';
+import TimedAlert from '../../components/TimedAlert';
 import SignupModal from './SignupModal';
 import './Login.scss';
 
 const Login = ({ dispatch, logged }) => {
   const [user, setUser] = useState('');
   const [pw, setPw] = useState('');
-  const [loginErr, setLoginErr] = useState(false);
+  const [alert, setAlert] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
 
   if (logged) {
@@ -25,7 +25,7 @@ const Login = ({ dispatch, logged }) => {
     event.preventDefault();
     const fullEmail = `${user.toLowerCase()}@unitec.edu`;
     dispatch(login(fullEmail, pw))
-      .catch(() => setLoginErr(true));
+      .catch(() => setAlert('No existe un usuario con esas credenciales'));
   };
 
   const onHideModal = () => {
@@ -76,14 +76,17 @@ const Login = ({ dispatch, logged }) => {
                 onChange={e => setPw(e.target.value)}
               />
 
-              <Alert className="fade-in" show={loginErr} variant="danger">
-                Error al ingresar, no existe un usuario con esas credenciales!
-              </Alert>
+              <TimedAlert
+                className="mb-4"
+                type={alert}
+                reset={() => setAlert(null)}
+                success="Operación realizada con éxito"
+              />
 
               {/* Forgot password */}
-              <Button variant="link" block>
+              {/* <Button variant="link" block>
                 Recuperar contraseña
-              </Button>
+              </Button> */}
 
               {/* Submit button */}
               <Button type="submit" variant="primary" block>

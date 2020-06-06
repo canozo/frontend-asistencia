@@ -122,7 +122,7 @@ const Section = ({ token }) => {
       // TODO
       const days = {
         idSection: res.id,
-        idDays: [2, 3, 4, 5, 6],
+        idDays: [2, 3, 4, 5],
       };
       const daysString = 'LuMaMiJu';
       await api('/section/days', 'post', days, token);
