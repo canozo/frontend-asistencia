@@ -1,6 +1,6 @@
 const globals = {
-  // server: 'http://localhost:5000',
-  server: 'http://ec2-3-86-140-112.compute-1.amazonaws.com',
+  // server: 'https://localhost:5000',
+  server: 'https://ec2-3-86-140-112.compute-1.amazonaws.com',
   regex: {
     username: /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))/,
     password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/,
