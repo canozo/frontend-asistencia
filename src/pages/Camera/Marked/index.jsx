@@ -26,27 +26,26 @@ async function get(route, token, signal) {
 
 const Marked = ({ token }) => {
   const [marked, setMarked] = useState([]);
-  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const ac = new AbortController();
-    api('/camera/marked', 'get', undefined, token, ac.signal)
-      .then(res => setMarked(res.data))
-      .catch(err => console.log(err));
+    async function job() {
+      try {
+        const res = await api('/camera/marked', 'get', undefined, token, ac.signal);
+        const mapped = res.data.map(async (item) => {
+          const img = await get(`/camera/capture/${item.captureKey}`, token, ac.signal);
+          return { ...item, src: img };
+        });
+        const data = await Promise.all(mapped);
+        setMarked(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    job();
     return () => ac.abort();
   }, []);
-
-  useEffect(() => {
-    const ac = new AbortController();
-    const newImages = [];
-    marked.forEach(item => {
-      get(`/camera/capture/${item.captureKey}`, token, ac.signal)
-        .then(res => newImages.push(res))
-        .then(() => setImages(newImages))
-        .catch(err => console.log(err));
-    });
-    return () => ac.abort();
-  }, [marked]);
 
   return (
     <div className="container-fluid fade-in">
@@ -67,13 +66,13 @@ const Marked = ({ token }) => {
           </tr>
         </thead>
         <tbody>
-          {marked.map((item, i) => (
+          {marked.map(item => (
             <tr key={`${item.idLog}-${item.idStudent}`}>
               <td>{item.classCode} - {item.className}</td>
               <td>{item.student}</td>
               <td>{item.accountNumber}</td>
               <td>{new Date(item.markedAt).toLocaleString()}</td>
-              <td><img style={{ height: '64px', width: '64px' }} src={images[i]} /></td>
+              <td><img style={{ height: '64px', width: '64px' }} src={item.src} /></td>
             </tr>
           ))}
         </tbody>
