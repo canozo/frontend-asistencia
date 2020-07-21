@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -46,7 +46,7 @@ const Login = ({ dispatch, logged }) => {
               <h3>Iniciar sesión</h3>
               <h6 className="mb-4">
                 <small className="text-muted">
-                  v0.1.0
+                  v1.0
                 </small>
               </h6>
 
@@ -99,11 +99,14 @@ const Login = ({ dispatch, logged }) => {
               </Button>
 
               {/* About button */}
-              <Link to="/about">
-                <Button variant="info" className="mt-5" block>
-                  Sobre el proyecto
-                </Button>
-              </Link>
+              <Button
+                variant="info"
+                className="mt-5"
+                block
+                onClick={() => window.open('/paper.pdf', '_blank')}
+              >
+                Sobre el proyecto
+              </Button>
 
             </div>
           </div>
