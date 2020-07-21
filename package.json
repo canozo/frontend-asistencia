@@ -1,6 +1,6 @@
 {
   "name": "website-asistencia",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Asistencia UNITEC",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
