@@ -94,6 +94,7 @@ const StudentList = ({ dispatch, open, idUser, idSection, classCode, className, 
                 <th>Cuenta</th>
                 <th>Estudiante</th>
                 <th>Marcado</th>
+                <th>Captura</th>
               </tr>
             </thead>
             <tbody>
@@ -126,8 +127,13 @@ const StudentList = ({ dispatch, open, idUser, idSection, classCode, className, 
                   <td>{student.student}</td>
                   <td>
                     {student.idMarkedBy ? (
-                      student.idMarkedBy === idUser ? 'Si' : 'Si, cámara'
+                      student.idMarkedBy === idUser ? 'Si, por docente' : 'Si, por cámara'
                     ) : 'No'}
+                  </td>
+                  <td>
+                    {student.captureKey ? (
+                      <img style={{ height: '64px', width: '64px' }} src={student.src} />
+                    ) : null}
                   </td>
                 </tr>
               ))}

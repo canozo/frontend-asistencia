@@ -1,3 +1,4 @@
+import config from '../../config';
 import api from '../../request';
 
 const ON_CHANGE = 'asistencia-web/attendance/ON_CHANGE';
@@ -33,7 +34,7 @@ export default function reducer(state = defaultState, action = {}) {
         ...state,
         students: state.students.map(student => {
           if (student.idStudent === action.payload.idStudent) {
-            return { ...student, idMarkedBy: null };
+            return { ...student, idMarkedBy: null, captureKey: null, src: null };
           }
           return student;
         }),
@@ -58,6 +59,26 @@ export default function reducer(state = defaultState, action = {}) {
     default:
       return state;
   }
+}
+
+async function get(route, token, signal) {
+  const data = await fetch(`${config.server}/api${route}`, {
+    method: 'get',
+    signal,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const res = await data.arrayBuffer();
+
+  // to base64
+  let binary = '';
+  const bytes = new Uint8Array(res);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i += 1) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return 'data:image/jpeg;base64,' + window.btoa(binary);
 }
 
 export function open(idSection) {
@@ -95,7 +116,15 @@ export function getAttendance(id, signal) {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const res = await api(`/attendance/${id}`, 'get', undefined, token, signal);
-    return dispatch({ type: ON_CHANGE, payload: { students: res.data } });
+    const mapped = res.data.map(async item => {
+      if (!item.captureKey) {
+        return item;
+      }
+      const img = await get(`/camera/capture/${item.captureKey}`, token, signal);
+      return { ...item, src: img };
+    });
+    const data = await Promise.all(mapped);
+    return dispatch({ type: ON_CHANGE, payload: { students: data } });
   };
 }
 
