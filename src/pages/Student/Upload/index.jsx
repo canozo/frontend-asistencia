@@ -6,7 +6,7 @@ import TimedAlert from '../../../components/TimedAlert';
 import config from '../../../config';
 import api from '../../../request';
 
-const server = `${config.server}/api`;
+const server = `${config.server}/api/student/upload`;
 
 async function apiUpload(token, formData) {
   const data = await fetch(server, {
@@ -37,6 +37,7 @@ const Upload = ({ token }) => {
   }, []);
 
   const fileChange = e => {
+    console.log('[DEBUG] Archivos: ', e.target.files);
     const nextSib = e.target.nextElementSibling;
     nextSib.innerText = e.target.files[0].name;
     setFile(e.target.files[0]);
@@ -50,6 +51,7 @@ const Upload = ({ token }) => {
 
       try {
         const some = await apiUpload(token, data);
+        console.log('[DEBUG] Respuesta: ', some);
         setAlert('success');
       }
       catch (err) {
