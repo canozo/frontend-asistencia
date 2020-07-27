@@ -37,10 +37,11 @@ const Upload = ({ token }) => {
   }, []);
 
   const fileChange = e => {
-    console.log('[DEBUG] Archivos: ', e.target.files);
-    const nextSib = e.target.nextElementSibling;
-    nextSib.innerText = e.target.files[0].name;
-    setFile(e.target.files[0]);
+    if (e.target.files.length > 0) {
+      const nextSib = e.target.nextElementSibling;
+      nextSib.innerText = e.target.files[0].name;
+      setFile(e.target.files[0]);
+    }
   };
 
   const submit = async event => {
@@ -51,8 +52,8 @@ const Upload = ({ token }) => {
 
       try {
         const some = await apiUpload(token, data);
-        console.log('[DEBUG] Respuesta: ', some);
         setAlert('success');
+        setFile(null);
         setTimeout(() => {
           api('/student/faces', 'get', undefined, token)
             .then(res => setFaces(res.data))
