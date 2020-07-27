@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -27,6 +27,7 @@ const Upload = ({ token }) => {
   const [faces, setFaces] = useState([]);
   const [file, setFile] = useState(null);
   const [alert, setAlert] = useState(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -54,6 +55,7 @@ const Upload = ({ token }) => {
         const some = await apiUpload(token, data);
         setAlert('success');
         setFile(null);
+        inputRef.current.nextElementSibling.innerText = 'Archivo';
         setTimeout(() => {
           api('/student/faces', 'get', undefined, token)
             .then(res => setFaces(res.data))
@@ -110,6 +112,7 @@ const Upload = ({ token }) => {
               <label htmlFor="file-input">Subir imagen de rostro</label>
               <div className="custom-file">
                 <input
+                  ref={inputRef}
                   type="file"
                   onChange={fileChange}
                   name="face"
