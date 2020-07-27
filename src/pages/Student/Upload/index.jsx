@@ -53,6 +53,11 @@ const Upload = ({ token }) => {
         const some = await apiUpload(token, data);
         console.log('[DEBUG] Respuesta: ', some);
         setAlert('success');
+        setTimeout(() => {
+          api('/student/faces', 'get', undefined, token)
+            .then(res => setFaces(res.data))
+            .catch(err => console.log(err));
+        }, 3000);
       }
       catch (err) {
         setAlert(err.message);
