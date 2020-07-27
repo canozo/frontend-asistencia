@@ -57,7 +57,7 @@ const Upload = ({ token }) => {
           api('/student/faces', 'get', undefined, token)
             .then(res => setFaces(res.data))
             .catch(err => console.log(err));
-        }, 3000);
+        }, 6000);
       }
       catch (err) {
         setAlert(err.message);
