@@ -42,6 +42,18 @@ body, html, #root {
   align-items: center;
 }
 
+.action-long {
+  width: 200px;
+}
+
+.action-medium {
+  width: 192px;
+}
+
+.action-short {
+  width: 110px;
+}
+
 .fade-in {
   animation: opacity-in 1s;
 }

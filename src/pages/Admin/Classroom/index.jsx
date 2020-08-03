@@ -236,7 +236,7 @@ const Classroom = ({ token }) => {
         <tbody>
           {list.map(item => (
             <tr key={item.idClassroom}>
-              <td style={{ width: '185px' }}>
+              <td className="action-medium">
                 <Button
                   className="mx-1"
                   variant="dark"

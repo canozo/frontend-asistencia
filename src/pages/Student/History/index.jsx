@@ -49,7 +49,7 @@ const History = ({ token, accountNumber }) => {
         <tbody>
           {history.map(his => (
             <tr key={`${accountNumber}-${his.idLog}`}>
-              <td style={{ width: '192px' }}>
+              <td className="action-long">
                 <ToggleButtonGroup
                   name="radio-student-present"
                   className="w-100"

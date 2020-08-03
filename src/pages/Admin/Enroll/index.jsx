@@ -110,7 +110,7 @@ const Enroll = ({ token }) => {
         <tbody>
           {list.map(item => (
             <tr key={item.idUser}>
-              <td style={{ width: '190px' }}>
+              <td className="action-long">
                 <Button
                   className="mx-1"
                   variant="dark"

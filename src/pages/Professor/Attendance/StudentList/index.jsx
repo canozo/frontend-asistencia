@@ -100,7 +100,7 @@ const StudentList = ({ dispatch, open, idUser, idSection, classCode, className, 
             <tbody>
               {students.map(student => (
                 <tr key={student.idStudent}>
-                  <td style={{ width: '192px' }}>
+                  <td className="action-long">
                     <ToggleButtonGroup
                       name="radio-present"
                       className="w-100"

@@ -164,7 +164,7 @@ const Professor = ({ token }) => {
         <tbody>
           {list.map(item => (
             <tr key={item.idUser}>
-              <td style={{ width: '92px' }}>
+              <td className="action-short">
                 <Button
                   className="mx-1"
                   variant="danger"

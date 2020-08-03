@@ -8,7 +8,7 @@ const store = createStore(
   rootReducer,
   loadState(),
   composeWithDevTools(applyMiddleware(thunk))
-  );
+);
 
 store.subscribe(() => {
   saveState({ auth: store.getState().auth });
